@@ -1,0 +1,52 @@
+top_commerce
+
+* users
+- id
+- name
+- email
+- password
+- type
+
+* categories
+- id
+- name
+- image
+- parent_id
+
+* products
+- id
+- name
+- image
+- description
+- price
+- sale_price
+- quantity
+- category_id
+
+* carts
+- id
+- user_id
+- product_id
+- price
+- order_id
+
+* orders
+- id
+- user_id
+- total
+- special_discount
+- status
+
+* payments
+- id
+- user_id
+- order_id
+- total
+- transaction_id
+
+* reviews
+- id
+- user_id
+- product_id
+- content
+- star
