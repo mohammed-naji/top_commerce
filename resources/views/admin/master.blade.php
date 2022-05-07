@@ -148,6 +148,13 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('adminasset/js/sb-admin-2.min.js') }}"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.0.2/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+          selector: '.tinytext'
+        });
+    </script>
+
     @yield('scripts')
 
 </body>
