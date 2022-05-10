@@ -56,6 +56,14 @@ class ProductController extends Controller
 
         // store image
         $new_image = rand().rand().$request->file('image')->getClientOriginalName();
+
+        $new_image = str_replace(' ', '', $new_image);
+        // $full_name = explode('.', $new_image);
+        // $ex = end($full_name);
+        // unset($full_name[array_search($ex, $full_name)]);
+        // $new_image = implode('',$full_name);
+        $new_image = strtolower($new_image);
+        // $new_image = $new_image.'.'.$ex;
         $request->file('image')->move(public_path('uploads/images/products'), $new_image);
 
         // store data
@@ -122,6 +130,9 @@ class ProductController extends Controller
             // store image
             $new_image = rand().rand().$request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('uploads/images/products'), $new_image);
+            // $new_image = str_replace(' ', '', $new_image);
+            // $new_image = str_replace('.', '', $new_image);
+            // $new_image = strtolower($new_image);
         }
 
         // store data
