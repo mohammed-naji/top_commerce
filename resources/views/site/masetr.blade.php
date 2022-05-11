@@ -1,3 +1,6 @@
+<?php
+use App\Models\Cart;
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -166,7 +169,7 @@
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
                                 <li><a href="login-register.html"><span class="ti-user"></span></a></li>
                                 <li class="cart__menu"><span class="ti-shopping-cart"></span></li>
-                                <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
+
                             </ul>
                         </div>
                     </div>
@@ -176,6 +179,78 @@
             <!-- End Mainmenu Area -->
         </header>
         <!-- End Header Style -->
+        <div class="body__overlay"></div>
+<!-- Start Offset Wrapper -->
+<div class="offset__wrapper">
+    <!-- Start Search Popap -->
+    <div class="search__area">
+        <div class="container" >
+            <div class="row" >
+                <div class="col-md-12" >
+                    <div class="search__inner">
+                        <form action="#" method="get">
+                            <input placeholder="Search here... " type="text">
+                            <button type="submit"></button>
+                        </form>
+                        <div class="search__close__btn">
+                            <span class="search__close__btn_icon"><i class="zmdi zmdi-close"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Search Popap -->
+    <!-- Start Cart Panel -->
+    <div class="shopping__cart">
+        <div class="shopping__cart__inner">
+            <div class="offsetmenu__close__btn">
+                <a href="#"><i class="zmdi zmdi-close"></i></a>
+            </div>
+            <div class="shp__cart__wrap">
+                @php
+                    $subtotal = 0;
+                    $carts = Cart::with('product')->where('user_id', Auth::id())->get();
+                @endphp
+                @foreach ($carts as $cart)
+                @php
+                    $subtotal += $cart->price * $cart->qty;
+                @endphp
+                <div class="shp__single__product">
+                    <div class="shp__pro__thumb">
+                        <a href="#">
+                            <img src="{{ asset('uploads/images/products/'.$cart->product->image) }}" alt="product images">
+                        </a>
+                    </div>
+                    <div class="shp__pro__details">
+                        <h2><a href="{{ route('site.product', $cart->product_id) }}">{{ $cart->product->name }}</a></h2>
+                        <span class="quantity">QTY: {{ $cart->qty }}</span>
+                        <span class="shp__price">${{ $cart->price }}</span>
+                    </div>
+                    <div class="remove__btn">
+                        <form id="remove-item-{{ $cart->id }}" action="{{ route('remove_cart', $cart->id) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        </form>
+                        <a onclick="event.preventDefault(); document.getElementById('remove-item-{{ $cart->id }}').submit()" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
+                    </div>
+                </div>
+                @endforeach
+
+            </div>
+            <ul class="shoping__total">
+                <li class="subtotal">Subtotal:</li>
+                <li class="total__price">${{ number_format($subtotal, 2) }}</li>
+            </ul>
+            <ul class="shopping__btn">
+                <li><a href="cart.html">View Cart</a></li>
+                <li class="shp__checkout"><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- End Cart Panel -->
+</div>
+<!-- End Offset Wrapper -->
         @yield('content')
         <!-- Start Footer Area -->
         <footer class="htc__foooter__area gray-bg">

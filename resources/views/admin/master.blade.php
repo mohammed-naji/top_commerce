@@ -151,7 +151,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.0.2/tinymce.min.js"></script>
     <script>
         tinymce.init({
-          selector: '.tinytext'
+          selector: '.tinytext',
+          plugins: ['code']
         });
     </script>
 
