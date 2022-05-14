@@ -228,11 +228,12 @@ use App\Models\Cart;
                         <span class="shp__price">${{ $cart->price }}</span>
                     </div>
                     <div class="remove__btn">
-                        <form id="remove-item-{{ $cart->id }}" action="{{ route('remove_cart', $cart->id) }}" method="POST">
+                        {{-- <form id="remove-item-{{ $cart->id }}" action="{{ route('remove_cart', $cart->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        </form>
-                        <a onclick="event.preventDefault(); document.getElementById('remove-item-{{ $cart->id }}').submit()" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
+                        </form> --}}
+                        {{-- <a onclick="event.preventDefault(); document.getElementById('remove-item-{{ $cart->id }}').submit()" title="Remove this item"><i class="zmdi zmdi-close"></i></a> --}}
+                        <a href="{{ route('remove_cart', $cart->id) }}" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
                     </div>
                 </div>
                 @endforeach
@@ -243,7 +244,7 @@ use App\Models\Cart;
                 <li class="total__price">${{ number_format($subtotal, 2) }}</li>
             </ul>
             <ul class="shopping__btn">
-                <li><a href="cart.html">View Cart</a></li>
+                <li><a href="{{ route('cart') }}">View Cart</a></li>
                 <li class="shp__checkout"><a href="checkout.html">Checkout</a></li>
             </ul>
         </div>

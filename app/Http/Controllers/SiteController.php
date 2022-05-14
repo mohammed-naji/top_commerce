@@ -30,4 +30,10 @@ class SiteController extends Controller
 
         return view('site.product', compact('product'));
     }
+
+    public function shop()
+    {
+        $products = Product::paginate(8);
+        return view('site.shop', compact('products'));
+    }
 }
