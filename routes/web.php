@@ -24,6 +24,7 @@ Route::get('/', [SiteController::class, 'index'])->name('site.index');
 Route::get('/shop', [SiteController::class, 'shop'])->name('site.shop');
 Route::get('/category/{id}', [SiteController::class, 'category'])->name('site.category');
 Route::get('/product/{id}', [SiteController::class, 'product'])->name('site.product');
+Route::post('/add_review', [SiteController::class, 'add_review'])->name('site.add_review');
 
 
 // Cart Operation Routes
@@ -33,4 +34,5 @@ Route::middleware('auth')->group(function() {
     Route::get('cart', [CartController::class, 'cart'])->name('cart');
     Route::post('update-cart', [CartController::class, 'update_cart'])->name('update_cart');
     Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::get('checkout/thanks', [CartController::class, 'checkout_thanks'])->name('checkout_thanks');
 });

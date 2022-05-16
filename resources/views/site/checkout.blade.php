@@ -29,10 +29,10 @@
                 <div class="ckeckout-left-sidebar">
                     <!-- Start Checkbox Area -->
                     <div class="checkout-form">
-                        <h2 class="section-title-3">Billing details</h2>
+                        <h2 style="margin-bottom: 50px" class="section-title-3">Billing details</h2>
 
                         <script src="https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId={{ $checkoutId }}"></script>
-                        <form action="{shopperResultUrl}" class="paymentWidgets" data-brands="VISA MASTER AMEX MADA"></form>
+                        <form action="{{ route('checkout_thanks') }}" class="paymentWidgets" data-brands="VISA MASTER AMEX MADA"></form>
 
 
                     </div>

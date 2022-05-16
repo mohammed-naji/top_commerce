@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {
@@ -26,7 +28,7 @@ class SiteController extends Controller
 
     public function product($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('reviews')->findOrFail($id);
 
         return view('site.product', compact('product'));
     }
@@ -35,5 +37,18 @@ class SiteController extends Controller
     {
         $products = Product::paginate(8);
         return view('site.shop', compact('products'));
+    }
+
+    public function add_review(Request $request)
+    {
+
+        Review::create([
+            'user_id' => Auth::id(),
+            'product_id' => $request->product_id,
+            'comment' => $request->comment,
+            'star' => $request->star,
+        ]);
+
+        return redirect()->back();
     }
 }

@@ -210,7 +210,7 @@ use App\Models\Cart;
             <div class="shp__cart__wrap">
                 @php
                     $subtotal = 0;
-                    $carts = Cart::with('product')->where('user_id', Auth::id())->get();
+                    $carts = Cart::with('product')->where('user_id', Auth::id())->whereNull('order_id')->get();
                 @endphp
                 @foreach ($carts as $cart)
                 @php

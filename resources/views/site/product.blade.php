@@ -2,6 +2,33 @@
 
 @section('title', $product->name .' | ' . env('APP_NAME'))
 
+@section('styles')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+     .star-rating {
+	 direction: rtl;
+	 display: inline-block;
+	 padding: 20px;
+	 cursor: default;
+}
+ .star-rating input[type="radio"] {
+	 display: none;
+}
+ .star-rating label {
+	 color: #bbb;
+	 font-size: 2rem;
+	 padding: 0;
+	 cursor: pointer;
+	 -webkit-transition: all 0.3s ease-in-out;
+	 transition: all 0.3s ease-in-out;
+}
+ .star-rating label:hover, .star-rating label:hover ~ label, .star-rating input[type="radio"]:checked ~ label {
+	 color: #f2b600;
+}
+
+</style>
+@stop
+
 @section('content')
         <!-- End Offset Wrapper -->
         <!-- Start Bradcaump area -->
@@ -46,6 +73,22 @@
                                 <h2>{{ $product->name }}</h2>
                             </div>
                             <div class="pro__dtl__rating">
+                                @php
+$stars = round($product->reviews->avg('star'), 2);
+$count = 1;
+$result = "";
+
+for($i = 1; $i <= 5; $i++){
+    if($stars >= $count){
+        $result .= '<span><i class="zmdi zmdi-star"></i></span>';
+    } else {
+        $result .= '<span><span class="ti-star"></span></span>';
+    }
+    $count++;
+}
+echo $result;
+                                @endphp
+                                {{ round($product->reviews->avg('star'), 2) }}
                                 <ul class="pro__rating">
                                     <li><span class="ti-star"></span></li>
                                     <li><span class="ti-star"></span></li>
@@ -53,7 +96,7 @@
                                     <li><span class="ti-star"></span></li>
                                     <li><span class="ti-star"></span></li>
                                 </ul>
-                                <span class="rat__qun">(Based on 0 Ratings)</span>
+                                <span class="rat__qun">(Based on {{ $product->reviews->count() }} Ratings)</span>
                             </div>
                             <div class="pro__details">
                                 {!! $product->description !!}
@@ -220,11 +263,12 @@
                                     </div>
                                     <!-- End Single Review -->
                                 </div>
-                                <!-- Start RAting Area -->
+                                @auth
+                                    <!-- Start RAting Area -->
                                 <div class="rating__wrap">
-                                    <h2 class="rating-title">Write  A review</h2>
+                                    <h2 class="rating-title">Write A review</h2>
                                     <h4 class="rating-title-2">Your Rating</h4>
-                                    <div class="rating__list">
+                                    {{-- <div class="rating__list">
                                         <!-- Start Single List -->
                                         <ul class="rating">
                                             <li><i class="zmdi zmdi-star-half"></i></li>
@@ -260,27 +304,53 @@
                                             <li><i class="zmdi zmdi-star-half"></i></li>
                                         </ul>
                                         <!-- End Single List -->
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <!-- End RAting Area -->
                                 <div class="review__box">
-                                    <form id="review-form">
-                                        <div class="single-review-form">
+                                    <form id="review-form" method="POST" action={{ route('site.add_review') }}>
+                                        @csrf
+                                        <div class="star-rating">
+                                            <input id="star-5" type="radio" name="star" value="5" />
+                                            <label for="star-5" title="5 stars">
+                                              <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-4" type="radio" name="star" value="4" />
+                                            <label for="star-4" title="4 stars">
+                                              <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-3" type="radio" name="star" value="3" />
+                                            <label for="star-3" title="3 stars">
+                                              <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-2" type="radio" name="star" value="2" />
+                                            <label for="star-2" title="2 stars">
+                                              <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-1" type="radio" name="star" value="1" />
+                                            <label for="star-1" title="1 star">
+                                              <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                          </div>
+
+                                        {{-- <div class="single-review-form">
                                             <div class="review-box name">
                                                 <input type="text" placeholder="Type your name">
                                                 <input type="email" placeholder="Type your email">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="single-review-form">
                                             <div class="review-box message">
-                                                <textarea placeholder="Write your review"></textarea>
+                                                <textarea name="comment" placeholder="Write your review"></textarea>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <div class="review-btn">
-                                            <a class="fv-btn" href="#">submit review</a>
+                                            <button class="fv-btn" >submit review</button>
                                         </div>
                                     </form>
                                 </div>
+                                @endauth
                             </div>
                             <!-- End Single Content -->
                         </div>
