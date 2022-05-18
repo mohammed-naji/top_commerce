@@ -49,8 +49,13 @@
                                         </div>
 
                                     </div>
+                                    {{-- {{ App::currentLocale() }} --}}
                                     <div class="product__details">
-                                        <h2><a href="{{ route('site.product', $product->id) }}">{{ $product->name }}</a></h2>
+                                        <h2><a href="{{ route('site.product', $product->id) }}">
+                                            @php
+                                                $name = 'name_'.App::currentLocale();
+                                            @endphp
+                                            {{ $product->$name }}</a></h2>
                                         <ul class="product__price">
                                             @if ($product->sale_price)
                                             <li class="old__price">${{ $product->price }}</li>

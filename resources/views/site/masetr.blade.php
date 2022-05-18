@@ -36,6 +36,15 @@ use App\Models\Cart;
     <!-- Modernizr JS -->
     <script src="{{ asset('siteasset/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 
+    @if (App::currentLocale() == 'ar')
+    <style>
+        body {
+            direction: rtl;
+            text-align: right;
+        }
+    </style>
+    @endif
+
     @yield('styles')
 </head>
 
@@ -63,7 +72,7 @@ use App\Models\Cart;
                         <div class="col-md-8 col-lg-8 col-sm-6 col-xs-6">
                             <nav class="mainmenu__nav hidden-xs hidden-sm">
                                 <ul class="main__menu">
-                                    <li class="drop"><a href="{{ route('site.index') }}">Home</a></li>
+                                    <li class="drop"><a href="{{ route('site.index') }}">{{ __('site.Home') }}</a></li>
                                     <li class="drop"><a href="portfolio-card-box-2.html">portfolio</a>
                                         <ul class="dropdown">
                                             <li><a href="portfolio-card-box-2.html">portfolio</a></li>
@@ -126,11 +135,22 @@ use App\Models\Cart;
                                         </ul>
                                     </li>
                                     <li><a href="contact.html">contact</a></li>
+                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                    @if (App::currentLocale() != $localeCode)
+                                    <li>
+                                        <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                            {{ $properties['native'] }}
+                                        </a>
+                                    </li>
+                                    @endif
+
+                                @endforeach
+
                                 </ul>
                             </nav>
                             <div class="mobile-menu clearfix visible-xs visible-sm">
                                 <nav id="mobile_dropdown">
-                                    <ul>
+                                    <>
                                         <li><a href="index.html">Home</a></li>
                                         <li><a href="#">portfolio</a>
                                             <ul>
@@ -159,6 +179,15 @@ use App\Models\Cart;
                                             </ul>
                                         </li>
                                         <li><a href="contact.html">contact</a></li>
+
+                                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                <li>
+                                                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                                        {{ $properties['native'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+
                                     </ul>
                                 </nav>
                             </div>
