@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -16,6 +17,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
+
+        // dd(Gate::allows('categories.index'));
+
+        Gate::authorize('categories.index');
+
+        // if(!Gate::allows('categories.index')) {
+        //     abort(403, 'حبيبي انت مش مصرح الك حل عن راسي');
+        // }
+
         $categories = Category::with('products', 'parent')->withCount('products')->orderBy('id', 'desc')->paginate(10);
 
         // dd($categories);
@@ -29,6 +39,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        Gate::authorize('categories.create');
         $categories = Category::whereNull('parent_id')->get();
         return view('admin.categories.create', compact('categories'));
     }
@@ -41,6 +52,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('categories.create');
         // validate input
         $request->validate([
             'name' => 'required',
@@ -70,7 +82,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        Gate::authorize('categories.index');
     }
 
     /**
@@ -81,6 +93,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('categories.edit');
         $category = Category::findOrFail($id);
         $categories = Category::whereNull('parent_id')->where('id', '<>', $category->id)->get();
         return view('admin.categories.edit', compact('categories', 'category'));
@@ -95,6 +108,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Gate::authorize('categories.edit');
         // validate input
         $request->validate([
             'name' => 'required',
@@ -128,6 +142,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('categories.delete');
         $category = Category::findOrFail($id);
 
         // Delete image

@@ -7,6 +7,8 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApiController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -14,7 +16,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::get('/', [AdminController::class, 'index'])->name('index');
 
     Route::resource('categories', CategoryController::class);
+
     Route::resource('products', ProductController::class);
+
+    Route::resource('roles', RoleController::class);
+
+    Route::resource('users', UserController::class);
 
 });
 
